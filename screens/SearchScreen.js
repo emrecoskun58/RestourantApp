@@ -1,30 +1,48 @@
 import { StyleSheet, Text, View, TextInput, ScrollView } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import useResult from "../hooks/useResult";
 import ResultList from "../components/ResultList";
 
 export default function SearchScreen() {
-  const [seacrhApi, results] = useResult();
+  const [seacrhApi, results, errorMessage] = useResult();
+  const [term, setTerm] = useState("");
   const filterResultByPrice = (price) => {
     return results.filter((result) => {
       return result.price === price;
     });
   };
-
-
   return (
     <ScrollView>
-      <SearchBar />
-      <ResultList title="Ucuz Restoranlar" results={filterResultByPrice("₺")} />
-      <ResultList
-        title="Uygun Restoranlar"
-        results={filterResultByPrice("₺₺")}
+      <SearchBar
+        term={term}
+        onTermChange={setTerm}
+        onTermSubmit={() => seacrhApi(term)}
       />
-      <ResultList
-        title="Pahalı Restoranlar"
-        results={filterResultByPrice("₺₺₺")}
-      />
+      {errorMessage ? (
+        <Text>errorMessage</Text>
+      ) : (
+        <>
+          {results.length == 0 ? (
+            <></>
+          ) : (
+            <>
+              <ResultList
+                title="Ucuz Restoranlar"
+                results={filterResultByPrice("₺")}
+              />
+              <ResultList
+                title="Uygun Restoranlar"
+                results={filterResultByPrice("₺₺")}
+              />
+              <ResultList
+                title="Pahalı Restoranlar"
+                results={filterResultByPrice("₺₺₺")}
+              />
+            </>
+          )}
+        </>
+      )}
     </ScrollView>
   );
 }

@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function ResultDetail({ result }) {
   return (
@@ -9,9 +10,14 @@ export default function ResultDetail({ result }) {
         source={result.image_url ? { uri: result.image_url } : null}
       />
       <Text style={styles.name}>{result.name}</Text>
-      <Text>
-        {result.rating} Yıldızlı Restoran, {result.review_count} Değerlendirme
-      </Text>
+      <View style={styles.textView}>
+        <Text>
+          <AntDesign name="star" size={14} color="gold" /> {result.rating}{" "}
+          Yıldızlı Restoran,{" "}
+          <AntDesign name="book" size={14} color="green" />{" "}
+          {result.review_count} Değerlendirme
+        </Text>
+      </View>
     </View>
   );
 }
@@ -21,12 +27,16 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   image: {
-    width: 250,
-    height: 250,
-    borderRadius:10,
-    marginBottom:5
+    width: 300,
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 5,
   },
-  name:{
-    fontWeight:'bold'
-  }
+  name: {
+    fontWeight: "bold",
+  },
+  textView: {
+    flexDirection:'row',
+    alignItems:'center',
+  },
 });
